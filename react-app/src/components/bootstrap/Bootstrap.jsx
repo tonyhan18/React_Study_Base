@@ -1,5 +1,3 @@
-import Accordion from "./Accordion";
-import { accordionData } from "../../data/index";
 import Dropdown from "./Dropdown";
 
 const Bootstrap = () => {
