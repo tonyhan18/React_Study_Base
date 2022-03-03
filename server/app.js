@@ -11,11 +11,10 @@ import postsRouter from "./routes/posts.js";
 import uploadRouter from "./routes/upload.js";
 
 const __dirname = path.resolve();
-let app = express();
+var app = express();
 
 app.use(cors({ origin: "http://localhost:3000" }));
 // view engine setup
-// view control
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
 
@@ -25,7 +24,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-// route control
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/posts", postsRouter);

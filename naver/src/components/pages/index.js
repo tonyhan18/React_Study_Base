@@ -1,5 +1,4 @@
-import Main from "./Main";
-import Movie from "./Movie";
-import Book from "./Book";
-
-export default { Main, Movie, Book };
+export { default as Main } from "./Main";
+export { default as Movie } from "./Movie";
+export { default as Book } from "./Book";
+export { default as BookDetail } from "./BookDetail";

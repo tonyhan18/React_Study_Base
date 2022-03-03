@@ -1,20 +1,33 @@
+import { NavLink, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { NavLink } from "react-router-dom";
 
-const NavItems = [
-  { link: "/", name: "메인" },
-  { link: "/movie", name: "영화" },
-  { link: "/book", name: "책" },
+const linkList = [
+  {
+    link: "/",
+    name: "메인",
+  },
+  {
+    link: "/movie",
+    name: "영화",
+  },
+  {
+    link: "/book",
+    name: "책",
+  },
 ];
 
 const TopNav = () => {
+  const { pathname } = useLocation();
+  if (pathname === "/") {
+    return <></>;
+  }
   return (
     <Container>
       <Nav>
-        {NavItems.map(({ link, name }) => (
-          <CustomeLink to={link}>
+        {linkList.map(({ link, name }) => (
+          <CustomLink to={link} key={link + name}>
             <LinkItem>{name}</LinkItem>
-          </CustomeLink>
+          </CustomLink>
         ))}
       </Nav>
     </Container>
@@ -29,19 +42,22 @@ const Container = styled.div`
   background: #fff;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
 `;
-const CustomeLink = styled(NavLink)`
-  &.active {
-    background-color: black;
-    color: white;
-  }
-`;
 
 const Nav = styled.nav`
   display: flex;
   align-items: center;
+  text-decoration: none;
 `;
+
 const LinkItem = styled.div`
-  margin: 10px 15px;
+  margin: 0 10px;
+  padding: 10px;
+`;
+const CustomLink = styled(NavLink)`
+  &.active {
+    background: #000;
+    color: #fff;
+  }
 `;
 
 export default TopNav;

@@ -1,8 +1,6 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import TopNav from "./components/organisms/TopNav";
-import Book from "./components/pages/Book";
-import Main from "./components/pages/Main";
-import Movie from "./components/pages/Movie";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { TopNav } from "./components/organisms";
+import { Main, Book, Movie, BookDetail } from "./components/pages";
 
 const Router = () => {
   return (
@@ -10,8 +8,9 @@ const Router = () => {
       <TopNav />
       <Routes>
         <Route path="/" element={<Main />} />
-        <Route path="/book" element={<Book />} />
         <Route path="/movie" element={<Movie />} />
+        <Route path="/book" element={<Book />} />
+        <Route path="/book/:isbn" element={<BookDetail />} />
       </Routes>
     </BrowserRouter>
   );

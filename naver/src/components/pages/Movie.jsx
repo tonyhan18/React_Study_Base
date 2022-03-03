@@ -1,72 +1,67 @@
-import { useState } from "react";
-import styled from "styled-components";
-import getMovieList from "../../apis/movie";
-import { Title } from "../atoms/index";
-import MovieList from "../organisms/MovieList";
+import { useEffect, useState } from "react";
+import { getMovieList } from "../../apis/movie";
+import { countryList } from "../../datas";
+import { BtnSubmit, Form, InputText } from "../atoms";
+import { MovieList } from "../organisms";
+import Pagination from "../organisms/Pagination";
 
 const Movie = () => {
-  const [movies, setMovies] = useState([]);
-  const [text, setText] = useState("");
+  const [text, settext] = useState("");
+  const [movieList, setMovieList] = useState([]);
+  const [country, setCountry] = useState(countryList[0].code);
+  const [query, setQuery] = useState("");
+  const [total, setTotle] = useState(0);
+  const [page, setPage] = useState(1);
 
-  const handleSubmit = async (e) => {
+  useEffect(() => {
+    searchMovie();
+  }, [country, page, query]);
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    const params = { query: text };
-    const { items } = await getMovieList(params);
-    setMovies(items);
+    setPage(1);
+    setQuery(text);
   };
+
+  const searchMovie = async () => {
+    if (!query) return;
+    const start = page * 10 - 9;
+    const params = { query, start };
+    if (country !== "ALL") {
+      params.country = country;
+    }
+    const { items, total } = await getMovieList(params);
+    //console.log(items);
+    setMovieList(items);
+    setTotle(total);
+  };
+
   return (
     <div>
-      <Title>Movie</Title>
+      <h1>Movie</h1>
       <Form onSubmit={handleSubmit}>
+        <select onChange={(e) => setCountry(e.target.value)}>
+          {countryList.map(({ code, name }) => (
+            <option key={code} value={code}>
+              {name}
+            </option>
+          ))}
+        </select>
         <InputText
-          name="input"
+          name="text"
           value={text}
-          onChange={(e) => setText(e.target.value)}
+          onChange={(e) => settext(e.target.value)}
         />
         <BtnSubmit>검색</BtnSubmit>
       </Form>
-      <MovieList movies={movies} />
+      <Pagination
+        onPageChange={(page) => setPage(page)}
+        total={total}
+        nowPage={page}
+      />
+      <MovieList data={movieList} />
     </div>
   );
 };
-
-const Form = styled.form`
-  //위치
-  margin-top: 5%;
-  display: flex;
-  //크기
-  //꾸미기
-  border: 1px solid #22b8cf;
-  border-radius: 5px;
-`;
-const InputText = styled.input`
-  //위치
-  padding: 5px;
-  background-color: white;
-  background: none;
-  outline: none;
-  border: none;
-  font-size: 1.1rem;
-  line-height: 1.5;
-  flex: 1;
-`;
-const BtnSubmit = styled.button`
-  background: none;
-  outline: none;
-  border: none;
-  background-color: #22bfff;
-  color: white;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  transition: 0.1s background ease-in;
-  &:hover {
-    background-color: #adb5bd;
-  }
-`;
 
 export default Movie;

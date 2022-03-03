@@ -1,9 +1,9 @@
-import { Instance } from "./index";
+import axios from "axios";
+import { instance } from ".";
 
-const getMovieList = async (params) => {
-  const { data } = await Instance.get("/v1/search/movie.json", { params });
-  console.log(data);
+export const getMovieList = async (params) => {
+  const { data } = await instance.get("/movie", {
+    params,
+  });
   return data;
 };
-
-export default getMovieList;

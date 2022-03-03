@@ -1,4 +1,2 @@
-import TopNav from "./TopNav";
-import MovieList from "./MovieList";
-
-export default { TopNav, MovieList };
+export { default as TopNav } from "./TopNav";
+export { default as MovieList } from "./MovieList";
